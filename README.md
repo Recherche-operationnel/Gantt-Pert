@@ -1,4 +1,4 @@
-# TP2 Diagrammes de Gantt et PERT
+# TP2: Diagrammes de Gantt et PERT
 Le but du projet? Visualiser les diagrammes de Gantt et PERT pour lles activités d'un projet spécifique. un projet
 
 ## Guide pratique

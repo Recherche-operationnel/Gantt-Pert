@@ -1,0 +1,27 @@
+[
+  {
+    "id": "P1",
+    "title": "Refonte du site web institutionnel",
+    "activities": ["A1", "A2", "A3", "A5", "A8"]
+  },
+  {
+    "id": "P2",
+    "title": "Application mobile de réservation",
+    "activities": ["A1", "A2", "A4", "A5", "A6", "A7", "A8"]
+  },
+  {
+    "id": "P3",
+    "title": "Déploiement d'une infrastructure DevOps",
+    "activities": ["A2", "A4", "A6", "A9"]
+  },
+  {
+    "id": "P4",
+    "title": "Création d’un chatbot support client",
+    "activities": ["A1", "A2", "A3", "A5", "A6", "A7"]
+  },
+  {
+    "id": "P5",
+    "title": "Mise en place d’un système de monitoring",
+    "activities": ["A2", "A4", "A5", "A6"]
+  }
+]

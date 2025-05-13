@@ -1,0 +1,56 @@
+[
+  {
+    "id": "A1",
+    "title": "Analyse des besoins",
+    "duration": 5,
+    "dependencies": []
+  },
+  {
+    "id": "A2",
+    "title": "Conception technique",
+    "duration": 4,
+    "dependencies": ["A1"]
+  },
+  {
+    "id": "A3",
+    "title": "Développement frontend",
+    "duration": 10,
+    "dependencies": ["A2"]
+  },
+  {
+    "id": "A4",
+    "title": "Développement backend",
+    "duration": 12,
+    "dependencies": ["A2"]
+  },
+  {
+    "id": "A5",
+    "title": "Tests unitaires",
+    "duration": 5,
+    "dependencies": ["A3", "A4"]
+  },
+  {
+    "id": "A6",
+    "title": "Intégration continue",
+    "duration": 3,
+    "dependencies": ["A5"]
+  },
+  {
+    "id": "A7",
+    "title": "Recette utilisateur",
+    "duration": 4,
+    "dependencies": []
+  },
+  {
+    "id": "A8",
+    "title": "Déploiement en production",
+    "duration": 2,
+    "dependencies": ["A7"]
+  },
+  {
+    "id": "A9",
+    "title": "Rétrospective projet",
+    "duration": 1,
+    "dependencies": ["A8"]
+  }
+]

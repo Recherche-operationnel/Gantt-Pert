@@ -6,7 +6,7 @@ Comment avoir et lancer le projet?
 
 1. Cloner le projet GitHub
 ```bash
-git clone 
+git clone https://github.com/Recherche-operationnel/Gantt-Pert.git
 
 ```
 

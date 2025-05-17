@@ -44,7 +44,6 @@ export default function Home() {
 
   return (
     <div className=" items-center justify-items-center max-w-full pb-20 ">
-      Landing Page
       <div className="mx-auto px-4 w-full bg-[url('/images/Ads1.png')] bg-cover bg-center bg-no-repeat h-screen">
         <div className="flex items-center p-6 justify-around h-full w-full flex-col md:flex-row">
           {/* Texte */}

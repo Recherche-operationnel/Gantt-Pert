@@ -23,5 +23,15 @@
     "id": "P5",
     "title": "Mise en place d’un système de monitoring",
     "activities": ["A2", "A4", "A5", "A6"]
+  },
+  {
+    "id":"P",
+    "title": "Test",
+    "activities":["A","B","C","D","E"]
+  },
+  {
+    "id":"P'",
+    "title": "Test",
+    "activities":["A","B","C","D","E","F","G","H","I","J"]
   }
 ]

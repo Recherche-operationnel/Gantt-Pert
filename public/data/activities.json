@@ -52,5 +52,65 @@
     "title": "Rétrospective projet",
     "duration": 1,
     "dependencies": ["A8"]
+  },
+  {
+    "id": "A",
+    "title": "A",
+    "duration": 4,
+    "dependencies": []
+  },
+  {
+    "id": "B",
+    "title": "B",
+    "duration": 5,
+    "dependencies": []
+  },
+  {
+    "id": "C",
+    "title": "C",
+    "duration": 4,
+    "dependencies": ["A"]
+  },
+  {
+    "id": "D",
+    "title": "D",
+    "duration": 2,
+    "dependencies": ["A","B"]
+  },
+  {
+    "id": "E",
+    "title": "E",
+    "duration": 4,
+    "dependencies": ["C","D"]
+  },
+  {
+    "id": "F",
+    "title": "F",
+    "duration": 2,
+    "dependencies": ["C","D"]
+  },
+  {
+    "id": "G",
+    "title": "G",
+    "duration": 6,
+    "dependencies": ["E","F"]
+  },
+  {
+    "id": "H",
+    "title": "H",
+    "duration": 8,
+    "dependencies": ["F"]
+  },
+  {
+    "id": "I",
+    "title": "I",
+    "duration": 4,
+    "dependencies": ["C","D"]
+  },
+  {
+    "id": "J",
+    "title": "J",
+    "duration": 5,
+    "dependencies": ["F","I"]
   }
 ]

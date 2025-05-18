@@ -51,7 +51,7 @@ export default function Home() {
             <h1 className="text-5xl font-bold m-4">
               Visualisez vos projets avec des diagrammes d'activités: Gantt&Pert
             </h1>
-            <p className="text-xl mb-8">
+            <p className="text-xl mb-8 m-4">
               Un moyen simple et efficace de planifier vos projets. Créez vos diagrammes d'activités en quelques clics.
             </p>
             
@@ -126,7 +126,7 @@ export default function Home() {
      </div>
 
     {/*Qu'est ce que vous attnedez?*/}
-    <div className="flex flex-row items-center bg-blue-400 w-full p-10 text-white justify-between">
+    <div className="flex flex-col md:flex-row items-center bg-blue-400 w-full p-10 text-white justify-between">
       <h2 className="text-3xl font-bold text-center mt-10 mb-6">Qu'est ce que vous attendez?</h2>
       <Link href="/projects">
             <button className=" text-xl bg-white hover:text-white hover:bg-blue-700 text-blue-700 font-semibold py-4 px-6 m-4 rounded">

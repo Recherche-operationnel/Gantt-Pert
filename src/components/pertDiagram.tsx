@@ -1,6 +1,7 @@
 import { ActivityService } from "@/services/activity.services";
 import { ProjectService } from "@/services/project.services";
 import { Activity, Project } from "@/types/types";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const projectService = new ProjectService();
@@ -10,9 +11,13 @@ const PertDiagram = () => {
   const [project, setProject] = useState<Project | null>(null);
   const [projectActivities, setProjectActivities] = useState<Activity[]>([]);
   
+  const searchParams = useSearchParams();
+  console.log("params",searchParams);
+  const projectId = searchParams.get('id') || "P3";
+
       useEffect(() => {
           const loadProjectActivities = async () => {
-            const project = await projectService.fetchById("P'");
+            const project = await projectService.fetchById(projectId);
             const activitiesIds = project?.activities||[];
             console.log("Identifiant des activités du projet P3:", activitiesIds);
             setProject(project || null);

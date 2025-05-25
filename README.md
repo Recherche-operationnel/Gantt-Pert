@@ -6,7 +6,7 @@ Comment avoir et lancer le projet?
 
 1. Cloner le projet GitHub
 ```bash
-git clone 
+git clone https://github.com/Recherche-operationnel/Gantt-Pert.git
 
 ```
 
@@ -84,7 +84,7 @@ Pour commencer,
 
 Pour TPD:
 - Le composant de la vue standard d'un projet ( pour acceder à cette page en attendant la redirection ajoute /projectViews)
-- Le modal qui contient le formulaire d'ajout d'une activité et L'ajout automatique dans le tableau
+- Le modal qui contient le formulaire d'ajout d'une activité et L'ajout automatique dans le tableau 
 - Le composant de la vue du diagramme de PERT
 
 Pour TK:

@@ -3,11 +3,9 @@ import { useState, useEffect } from "react";
 import Modal from "./modal";
 import { X } from "lucide-react";
 import { Activity, Project } from "@/types/types"
-import { ProjectService } from "@/services/project.services";
 import { ActivityService } from "@/services/activity.services";
 import { useSearchParams } from "next/navigation";
 
-const projectService = new ProjectService();
 const activityService = new ActivityService();
 
 const Standard = () => {
@@ -15,21 +13,20 @@ const Standard = () => {
     const [project, setProject] = useState<Project | null>(null);
     const [projectActivities, setProjectActivities] = useState<Activity[]>([]);
     const searchParams = useSearchParams();
-    const projectId = searchParams.get('id') || "P3";
+    const projectId = Number(searchParams.get('id')) || 1;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newTask, setNewTask] = useState({
     title: "",
     duration: 0,
-    dependencies: [] as string[],
+    dependencies: [] as number[],
   });
   const [error, setError] = useState("");
 
     useEffect(() => {
         const loadProjectActivities = async () => {
-          const project = await projectService.fetchById(projectId);
-          const activitiesIds = project?.activities||[];
-          console.log("Identifiant des activités du projet P3:", activitiesIds);
+          // const project = await projectService.fetchById(projectId);
+          const activitiesIds = await activityService.fetchByProjectId(projectId);
           setProject(project || null);
           if(activitiesIds){
             let activities = [];
@@ -46,26 +43,30 @@ const Standard = () => {
   
       }, []);
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (newTask.title && newTask.duration > 0) {
       const task: Activity = {
-        id: `T${Date.now()}`,
+        id: Date.now(),
         ...newTask,
       };
+      await activityService.create(task,projectId);
       setProjectActivities([...projectActivities, task]);
       setNewTask({ title: "", duration: 0, dependencies: [] });
       setIsModalOpen(false);
     }
   };
 
-  const handleDeleteTask = (taskId: string) => {
-    setProjectActivities(projectActivities.filter(task => task.id !== taskId));
+  const handleDeleteTask = async (taskId: number) => {
+    await activityService.delete(taskId);
+    // setProjectActivities(projectActivities.filter(task => task.id !== taskId));
   };
 
-  const getDependencyNames = (dependencies: string[]) => {
-    return dependencies
-      .map(id => projectActivities.find(t => t.id === id)?.title || 'Inconnue')
-      .join(", ") || "Aucune";
+  const getDependencyNames = (dependencies: number[]) => {
+    if(dependencies){
+      return dependencies
+        .map(id => projectActivities.find(t => t.id === id)?.title || 'Inconnue')
+        .join(", ") || "Aucune";
+    }
   };
 
   if (error) return <div className="p-4 text-red-500">{error}</div>;
@@ -188,7 +189,7 @@ const Standard = () => {
                 className="block w-full border rounded-md px-3 py-2 text-sm text-black bg-white"
                 value=""
                 onChange={(e) => {
-                  const selectedId = e.target.value;
+                  const selectedId = Number(e.target.value);
                   if (selectedId) {
                     setNewTask({
                       ...newTask,

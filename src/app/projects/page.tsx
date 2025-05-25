@@ -12,15 +12,15 @@ const ProjectsPage = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [newProject, setNewProject] = useState({ name: "", title: "" });
+  const [newProject, setNewProject] = useState({ description: "", title: "" });
   const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
-  const [newlyCreatedProjectId, setNewlyCreatedProjectId] = useState<string | null>(null);
-  const [newlyEditedProjectId, setNewlyEditedProjectId] = useState<string | null>(null);
+  const [projectToDelete, setProjectToDelete] = useState<number | null>(null);
+  const [newlyCreatedProjectId, setNewlyCreatedProjectId] = useState<number | null>(null);
+  const [newlyEditedProjectId, setNewlyEditedProjectId] = useState<number | null>(null);
   const router = useRouter();
 
   // Référence pour faire défiler jusqu'au nouveau projet
@@ -71,19 +71,19 @@ const ProjectsPage = () => {
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!newProject.name || !newProject.title) {
-      setError("Veuillez remplir tous les champs");
+    if ( !newProject.title) {
+      setError("Veuillez remplir au moins le champs du titre");
       return;
     }
 
     setIsLoading(true);
     try {
       // Générer un ID unique
-      const projectId = `P${Date.now()}`;
+      const projectId = Date.now();
       
       const projectData: Project = {
         id: projectId,
-        name: newProject.name,
+        description: newProject.description,
         title: newProject.title,
         activities: [] // Initialisation avec un tableau vide
       };
@@ -94,7 +94,7 @@ const ProjectsPage = () => {
       setProjects(prevProjects => [...prevProjects, createdProject]);
       
       // Réinitialiser le formulaire et fermer le modal
-      setNewProject({ name: "", title: "" });
+      setNewProject({ description: "", title: "" });
       setIsModalOpen(false);
       
       // Afficher un message de succès
@@ -130,8 +130,8 @@ const ProjectsPage = () => {
     
     if (!projectToEdit) return;
     
-    if (!projectToEdit.name || !projectToEdit.title) {
-      setError("Veuillez remplir tous les champs");
+    if ( !projectToEdit.title) {
+      setError("Veuillez modifier au moins le champ du titre");
       return;
     }
     
@@ -172,7 +172,7 @@ const ProjectsPage = () => {
   };
 
   // Gérer le clic sur le bouton de suppression
-  const handleDeleteClick = (e: React.MouseEvent, projectId: string) => {
+  const handleDeleteClick = (e: React.MouseEvent, projectId: number) => {
     e.stopPropagation(); // Empêche la navigation vers le projet
     setProjectToDelete(projectId);
     setIsDeleteModalOpen(true);
@@ -207,12 +207,12 @@ const ProjectsPage = () => {
   };
 
   // Vérifier si un projet est nouvellement créé ou édité
-  const isHighlightedProject = (projectId: string) => {
+  const isHighlightedProject = (projectId: number) => {
     return projectId === newlyCreatedProjectId || projectId === newlyEditedProjectId;
   };
 
   // Déterminer le message de badge
-  const getBadgeText = (projectId: string) => {
+  const getBadgeText = (projectId: number) => {
     if (projectId === newlyCreatedProjectId) return "Nouveau";
     if (projectId === newlyEditedProjectId) return "Modifié";
     return "";
@@ -286,7 +286,7 @@ const ProjectsPage = () => {
               onClick={() => router.push(`/projectViews?id=${project.id}`)}
             >
               <h3 className="text-xl font-semibold mb-2 text-white pr-14">{project.title}</h3>
-              <p className="text-gray-300">{project.name}</p>
+              <p className="text-gray-300">{project.description}</p>
               
               {/* Badge pour projet nouvellement créé ou édité */}
               {isHighlightedProject(project.id) && (
@@ -332,19 +332,6 @@ const ProjectsPage = () => {
           )}
           
           <form onSubmit={handleCreateProject}>
-            <div className="mb-4">
-              <label htmlFor="projectName" className="block text-sm font-medium text-gray-300 mb-1">
-                Nom du projet
-              </label>
-              <input
-                id="projectName"
-                type="text"
-                value={newProject.name}
-                onChange={(e) => setNewProject({...newProject, name: e.target.value})}
-                className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
-                placeholder="Entrez le nom du projet"
-              />
-            </div>
             <div className="mb-6">
               <label htmlFor="projectTitle" className="block text-sm font-medium text-gray-300 mb-1">
                 Titre du projet
@@ -356,6 +343,19 @@ const ProjectsPage = () => {
                 onChange={(e) => setNewProject({...newProject, title: e.target.value})}
                 className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
                 placeholder="Entrez le titre du projet"
+              />
+            </div>
+              <div className="mb-4">
+              <label htmlFor="projectName" className="block text-sm font-medium text-gray-300 mb-1">
+                Description
+              </label>
+              <input
+                id="projectName"
+                type="text"
+                value={newProject.description}
+                onChange={(e) => setNewProject({...newProject, description: e.target.value})}
+                className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
+                placeholder="Entrez le nom du projet"
               />
             </div>
             <div className="flex justify-end gap-3">
@@ -394,19 +394,6 @@ const ProjectsPage = () => {
           
           {projectToEdit && (
             <form onSubmit={handleUpdateProject}>
-              <div className="mb-4">
-                <label htmlFor="editProjectName" className="block text-sm font-medium text-gray-300 mb-1">
-                  Nom du projet
-                </label>
-                <input
-                  id="editProjectName"
-                  type="text"
-                  value={projectToEdit.name}
-                  onChange={(e) => setProjectToEdit({...projectToEdit, name: e.target.value})}
-                  className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
-                  placeholder="Entrez le nom du projet"
-                />
-              </div>
               <div className="mb-6">
                 <label htmlFor="editProjectTitle" className="block text-sm font-medium text-gray-300 mb-1">
                   Titre du projet
@@ -418,6 +405,19 @@ const ProjectsPage = () => {
                   onChange={(e) => setProjectToEdit({...projectToEdit, title: e.target.value})}
                   className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
                   placeholder="Entrez le titre du projet"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="editProjectName" className="block text-sm font-medium text-gray-300 mb-1">
+                  Description
+                </label>
+                <input
+                  id="editProjectName"
+                  type="text"
+                  value={projectToEdit.description}
+                  onChange={(e) => setProjectToEdit({...projectToEdit, description: e.target.value})}
+                  className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
+                  placeholder="Entrez le nom du projet"
                 />
               </div>
               <div className="flex justify-end gap-3">

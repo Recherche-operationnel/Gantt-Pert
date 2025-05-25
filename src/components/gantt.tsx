@@ -1,10 +1,8 @@
 import { Activity, Project } from "@/types/types";
 import { useEffect, useState } from "react";
-import { ProjectService } from "@/services/project.services";
 import { ActivityService } from "@/services/activity.services";
 import { useSearchParams } from "next/navigation";
 
-const projectService = new ProjectService();
 const activityService = new ActivityService();
 
 const GanttDiagram = () => {
@@ -13,7 +11,7 @@ const GanttDiagram = () => {
   const [projectActivities, setProjectActivities] = useState<Activity[]>([]);
   
     const searchParams = useSearchParams();
-    const projectId = searchParams.get('id') || "P3";
+    const projectId = Number(searchParams.get('id')) || 1;
 
   // Calculs pour le diagramme de Gantt
   const calculateStartEnd = (tasks: Activity[] |null) => {
@@ -58,9 +56,7 @@ const GanttDiagram = () => {
 
   useEffect(() => {
       const loadProjectActivities = async () => {
-        const project = await projectService.fetchById(projectId);
-        const activitiesIds = project?.activities||[];
-        console.log("Identifiant des activités du projet P3:", activitiesIds);
+        const activitiesIds = await activityService.fetchByProjectId(projectId);
         setProject(project || null);
         if(activitiesIds){
           let activities = [];

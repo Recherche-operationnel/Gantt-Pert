@@ -13,13 +13,11 @@ const PertDiagram = () => {
   
   const searchParams = useSearchParams();
   console.log("params",searchParams);
-  const projectId = searchParams.get('id') || "P3";
+    const projectId = Number(searchParams.get('id')) || 1;
 
       useEffect(() => {
           const loadProjectActivities = async () => {
-            const project = await projectService.fetchById(projectId);
-            const activitiesIds = project?.activities||[];
-            console.log("Identifiant des activités du projet P3:", activitiesIds);
+        const activitiesIds = await activityService.fetchByProjectId(projectId);
             setProject(project || null);
             if(activitiesIds){
               let activities = [];
@@ -36,7 +34,7 @@ const PertDiagram = () => {
         }, []);
   
         const getTaskTitle = (id: Activity['id']) => {
-          if (id === "start") return "Start";
+          if (id === 0) return "Start";
           const task = projectActivities.find(t => t.id === id);
           return task ? task.title : "";
         };
@@ -46,14 +44,14 @@ const PertDiagram = () => {
 
       const taskIds = pertData.allTasks.map((t) => t.id);
 
-    const hasSuccessor = new Set<string>();
+    const hasSuccessor = new Set<number>();
     pertData.allTasks.forEach((task) => {
       task.dependencies.forEach((dep) => hasSuccessor.add(dep));
     });
 
     const terminalTasks = taskIds.filter((id) => !hasSuccessor.has(id));
     const finalTask = {
-      id: "FIN",
+      id: pertData.allTasks.length ,
       title: "FIN",
       duration: 0,
       ES: maxDuration,
@@ -65,7 +63,7 @@ const PertDiagram = () => {
 
     const tasksWithFinal = [...pertData.allTasks, finalTask];
     const maxLevel = Math.max(...Object.values(taskLevels));
-    taskLevels["FIN"] = maxLevel + 1;
+    taskLevels[finalTask.id] = maxLevel + 1;
 
 
 
@@ -143,7 +141,7 @@ const PertDiagram = () => {
                         const depTask = pertData.allTasks.find(t => t.id === depId);
                         if (!depTask) return null;
                         
-                        const isWaitingEdge = task.ES > depTask.EF || task.id === "FIN";
+                        const isWaitingEdge = task.ES > depTask.EF || task.id === pertData.allTasks.length;
 
                         const depIndex = pertData.allTasks.findIndex(t => t.id === depId);
                         const depLevel = taskLevels[depId] || 0;
@@ -265,7 +263,7 @@ const calculateStartEnd = (tasks: Activity[] |null) => {
     
     // 1. Ajouter un nœud de départ pour les tâches sans dépendances
   const startNode: Activity = {
-    id: "start",
+    id: 0,
     title: "Start",
     duration: 0,
     dependencies: []
@@ -280,7 +278,7 @@ const tasksWithStart = [startNode, ...tasks.map(t => {
   if (hasNoDependencies || hasInvalidDependencies) {
     return {
       ...t,
-      dependencies: ["start"]
+      dependencies: [0]
     };
   }
 
@@ -345,9 +343,9 @@ const tasksWithStart = [startNode, ...tasks.map(t => {
 
   const getTaskLevels = (tasks: Activity[]) => {
   const levels: Record<string, number> = {};
-  const visited = new Set<string>();
+  const visited = new Set<number>();
 
-  const visit = (taskId: string, currentLevel: number) => {
+  const visit = (taskId: number, currentLevel: number) => {
     if (levels[taskId] !== undefined) {
       levels[taskId] = Math.max(levels[taskId], currentLevel);
     } else {
